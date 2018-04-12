@@ -3,29 +3,27 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { doubleMarginWidth } from 'src/styles/variables';
-import type { Sentence, Comparison } from 'src/libs/types';
-import { getSentence } from '../selectors/homeSelectors';
-import { getComparisons } from '../selectors/detailedChartsSelectors';
+import type { Comparison, Datum } from 'src/libs/types';
+import { getComparisons, getWeekData } from '../selectors/detailedChartsSelectors';
 import WeekChart from '../components/weekChart';
 import ComparisonList from '../components/comparisonList';
 
 type Props = {
   comparisons: Comparison[],
-  sentence: Sentence,
+  weekData: Datum[],
 }
-const DetailedChartsContainer = ({ comparisons, sentence }: Props) => (
+const DetailedChartsContainer = ({ comparisons, weekData }: Props) => (
   <ScrollView style={{ padding: doubleMarginWidth }}>
-    <WeekChart sentence={sentence} />
+    <WeekChart weekData={weekData} />
     <ComparisonList comparisons={comparisons} />
   </ScrollView>
 );
 
-DetailedChartsContainer.navigationOptions = ({ navigation }) => ({
-  title: navigation.state.params.title
-});
+DetailedChartsContainer.navigationOptions = ({ navigation }) =>
+  ({ title: navigation.state.params.title });
 
 const mapStateToProps = (state) => ({
-  sentence: getSentence(state),
+  weekData: getWeekData(state),
   comparisons: getComparisons(state),
 });
 

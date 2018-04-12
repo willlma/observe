@@ -1,8 +1,10 @@
 // @flow
 import React from 'react';
-import { StyleSheet, TouchableHighlight, View, Text, Keyboard } from 'react-native';
+import { StyleSheet, TouchableHighlight, View, Text } from 'react-native';
 import moment from 'moment';
-import type Sentence from 'src/libs/types';
+import { showBlanks } from 'src/libs/helpers';
+import { cloze } from 'src/libs/constants';
+import type { Sentence } from 'src/libs/types';
 import { smallFontSize, normalFontSize, doubleMarginWidth, halfMarginWidth } from 'src/styles/variables';
 import { white } from 'src/styles/colors';
 
@@ -14,17 +16,17 @@ type Props = {
 
 function onPress(sentence, navigate, selectSentence) {
   selectSentence(sentence.id);
-  navigate('DetailedCharts', { title: sentence.text });
+  navigate('DetailedCharts', { title: showBlanks(sentence.text) });
 }
 
-function lastOccurance(sentence) {
+function lastOccurrence(sentence) {
   const { occurrences } = sentence;
   return occurrences[occurrences.length - 1];
 }
 
 function renderSentence(sentence, navigate, selectSentence) {
-  const occurance = lastOccurance(sentence);
-  const text = sentence.text.replace('\\d', occurance.quantities[0]);
+  const occurrence = lastOccurrence(sentence);
+  const text = sentence.text.replace(cloze.digit, occurrence.quantities[0].toString());
   return (
     <TouchableHighlight
       key={`sentence-${sentence.id}`}
@@ -32,7 +34,7 @@ function renderSentence(sentence, navigate, selectSentence) {
     >
       <View style={styles.background}>
         <Text style={styles.text}>{text}</Text>
-        <Text style={styles.time}>{moment(occurance.timestamp).calendar()}</Text>
+        <Text style={styles.time}>{moment(occurrence.timestamp).calendar()}</Text>
       </View>
     </TouchableHighlight>
   );
@@ -40,7 +42,7 @@ function renderSentence(sentence, navigate, selectSentence) {
 
 export default function ({ navigate, sentences, selectSentence }: Props) {
   if (!sentences.length) return null;
-  sentences.sort((a, b) => lastOccurance(a).timestamp - lastOccurance(b).timestamp);
+  sentences.sort((a, b) => lastOccurrence(a).timestamp - lastOccurrence(b).timestamp);
   return (
     <View>
       {sentences.map((sentence) => renderSentence(sentence, navigate, selectSentence))}

@@ -1,9 +1,17 @@
 // @flow
 import ActionTypes from 'src/libs/actionTypes';
 import cloneDeep from 'lodash/cloneDeep';
-import type { Sentence, Comparison, Action } from 'src/libs/types';
+import type { Sentence, Action } from 'src/libs/types';
 
-export function sentences(state: Sentence[] = [], action: Action) {
+type sentencesAction = Action & {
+  sentences?: Sentence[],
+  quantities?: number[],
+  text?: string,
+  timestamp?: number,
+  index?: number
+}
+
+export function sentences(state: Sentence[] = [], action: sentencesAction) {
   switch (action.type) {
     case ActionTypes.sentences: return cloneDeep(action.sentences);
     case ActionTypes.appendSentence: {
@@ -26,7 +34,8 @@ export function sentences(state: Sentence[] = [], action: Action) {
   }
 }
 
-export function selectedSentenceId(state: ?number = null, action: Action) {
+type selectAction = Action & { id: number };
+export function selectedSentenceId(state: ?number = null, action: selectAction) {
   switch (action.type) {
     case ActionTypes.selectedSentenceId: return action.id;
     default: return state;

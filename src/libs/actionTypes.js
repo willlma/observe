@@ -1,3 +1,4 @@
+// @flow
 export default {
   appendSentence: 'APPEND_SENTENCE',
   comparisons: 'COMPARISONS',

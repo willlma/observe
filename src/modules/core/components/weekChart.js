@@ -1,62 +1,35 @@
 // @flow
 import React from 'react';
 import { VictoryBar, VictoryChart, VictoryAxis } from 'victory-native';
-import moment from 'moment';
-import type Sentence from 'src/libs/types';
-import { days, periods } from 'src/libs/constants';
+import type { Datum } from 'src/libs/types';
 
+const tickCount = (weekData) => {
+  const max = Math.max(...weekData.map((datum) => datum.y)) + 1;
+  return max > 5 ? null : max;
+};
 
-function getDay(date: Date) {
-  // this is 0-based on Monday instead of Sunday
-  const day = date.getDay();
-  return day === 0 ? 6 : day - 1;
-}
+const tickFormat = (tick) => (Number.isInteger(tick) ? tick : null);
 
-function normalizeData(sentence: Sentence) {
-  const monday = new Date();
-  monday.setDate(monday.getDate() - getDay(monday));
-  periods.forEach((period) => {
-    monday[`set${period}`](0);
-  });
-
-  const data = days.map((day, i) => ({ day: i, quantity: 0 }));
-  sentence.occurrences.forEach((occurrence) => {
-    const { timestamp, quantities } = occurrence;
-    if (timestamp < monday.getTime()) return;
-    const dayNumber = getDay(new Date(timestamp));
-    data[dayNumber].quantity += quantities[0];
-  });
-  return data;
-}
-
-const tickCount = (data) => Math.min(
-  2,
-  Math.ceil(Math.max.apply(null, data.map((datum) => datum.quantity))) || 1
-);
-
-type Props = {
-  sentence: Sentence
-}
-
-export default function ({ sentence }: Props) {
-  const data = normalizeData(sentence);
+export default function ({ weekData }: { weekData: Datum[] }) {
   return (
-    <VictoryChart domainPadding={{ x: 50 }} height={100} width={200} padding={30}>
+    <VictoryChart
+      domainPadding={16}
+      height={180}
+      padding={{ top: 50, bottom: 50, left: 50, right: 82 }}
+    >
+      <VictoryAxis />
       <VictoryAxis
-        tickValues={[0, 1, 2, 3, 4, 5, 6]}
-        tickFormat={days}
-      />
-      <VictoryAxis
-        style={style}
         dependentAxis
-        tickCount={tickCount(data)}
-        tickFormat={(tick) => Math.round(tick)}
+        style={yAxisStyle}
+        tickCount={tickCount(weekData)}
+        tickFormat={tickFormat}
       />
-      <VictoryBar data={data} x='day' y='quantity' />
+      <VictoryBar data={weekData} />
     </VictoryChart>
   );
 }
 
-const style = {
-  labels: { textAnchor: 'middle' }
+const yAxisStyle = {
+  labels: { textAnchor: 'middle' },
+  grid: { stroke: (tick) => tickFormat(tick) && '#ccc' }
 };

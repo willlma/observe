@@ -1,6 +1,7 @@
 // @flow
-
 import { createSelector } from 'reselect';
+import moment from 'moment';
+import { cloze } from 'src/libs/constants';
 import { getSentence, getSentences } from './homeSelectors';
 
 const splitter = ' ';
@@ -47,7 +48,7 @@ export const getComparisons = createSelector(getSentence, getSentences, (sentenc
     const diffSubstr = getSubstr(words, pointer, reversePointer);
 
     if (reversePointer) {
-      commonSubstr += ' \\w ' + baseWords.slice(-reversePointer).join(splitter);
+      commonSubstr += ` ${cloze.word}  ${baseWords.slice(-reversePointer).join(splitter)}`;
     }
 
     if (!comparisons[commonSubstr]) {
@@ -61,4 +62,20 @@ export const getComparisons = createSelector(getSentence, getSentences, (sentenc
     comparisons[commonSubstr][diffSubstr].push(sen.id);
   });
   return toArray(comparisons);
+});
+
+export const getWeekData = createSelector(getSentence, (sentence) => {
+  const weekData = [];
+  const daysPerWeek = 7;
+  const weekAgo = moment().startOf('day').subtract(daysPerWeek - 1, 'days');
+  for (let i = daysPerWeek; i--;) {
+    weekData.push({ x: moment().subtract(i, 'days').format('dd'), y: 0 });
+  }
+  sentence.occurrences.forEach(({ timestamp, quantities }) => {
+    const time = moment(timestamp);
+    if (time.isBefore(weekAgo)) return;
+    const index = daysPerWeek - 1 - moment().diff(time, 'days');
+    weekData[index].y += quantities[0];
+  });
+  return weekData;
 });

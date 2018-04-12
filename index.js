@@ -59,7 +59,7 @@ const sentences = [{
     { timestamp: now - day, quantities: [1] }
   ]
 }];
-const initialState = undefined;//{ sentences };
+const initialState = { sentences: [{"text":"I walked my dog","occurrences":[{"timestamp":1523485162828,"quantities":[1]}],"id":1},{"text":"I walked my cat","occurrences":[{"timestamp":1523485167920,"quantities":[1]}],"id":2},{"text":"I ran \\d miles","occurrences":[{"timestamp":1523485174797,"quantities":[2]}],"id":3},{"text":"I walked \\d miles","occurrences":[{"timestamp":1523485180059,"quantities":[4]}],"id":4},{"text":"I ate \\dg of sugar","occurrences":[{"timestamp":1523485190486,"quantities":[6]},{"timestamp":1523398941967,"quantities":[7]}],"id":5}] };
 const rootReducer = combineReducers({ ...homeReducers, ...detailedChartsReducers });
 const store = createStore(rootReducer, initialState, applyMiddleware(thunk));
 store.subscribe(throttle(() => {

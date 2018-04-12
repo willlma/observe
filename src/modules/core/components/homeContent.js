@@ -1,18 +1,18 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { ScrollView, View, StyleSheet, Keyboard } from 'react-native';
-import type Sentence from 'src/libs/types';
-import { lightGray } from 'src/styles/colors';
+import type { Sentence } from 'src/libs/types';
 import TextBox from '../components/textBox';
 import SentenceList from '../components/sentenceList';
 
-export default class HomeContent extends Component {
-  props: {
-    sentences: Sentence[],
-    addSentence: Function,
-    selectSentence: Function,
-    navigation: Object
-  }
+type Props = {
+  sentences: Sentence[],
+  addSentence: Function,
+  selectSentence: Function,
+  navigation: Object
+}
+
+export default class HomeContent extends PureComponent<Props> {
   scrollView: ScrollView
 
   componentWillMount() {
@@ -45,9 +45,7 @@ export default class HomeContent extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    height: '100%',
-  },
+  container: { height: '100%' },
   scrollView: {
     backgroundColor: '#34495e',
     flex: 1
