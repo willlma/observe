@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { StyleSheet, TextInput, Keyboard } from 'react-native';
 import { inputFontSize, marginWidth } from 'src/styles/variables';
 import { white } from 'src/styles/colors';
-import { Regex, cloze } from 'src/libs/constants';
 
 type Props = { addSentence: Function }
 type State = { text: string }
@@ -12,7 +11,7 @@ class TextBox extends Component<Props, State> {
   state = {
     text: '',
   };
-  
+
   render = () => (
     <TextInput
       autoCapitalize='sentences' //autoFocus
@@ -28,12 +27,7 @@ class TextBox extends Component<Props, State> {
   );
 
   onSubmit = () => {
-    const quantities: number[] = [];
-    const text = this.state.text.trim().replace(Regex.number, (match) => {
-      quantities.push(Number.parseFloat(match));
-      return cloze.digit;
-    });
-    this.props.addSentence(text, quantities);
+    this.props.addSentence(this.state.text.trim());
     this.setState({ text: '' });
     Keyboard.dismiss();
   };

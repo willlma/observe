@@ -34,7 +34,7 @@ function renderSentence(sentence, navigate, selectSentence) {
     >
       <View style={styles.background}>
         <Text style={styles.text}>{text}</Text>
-        <Text style={styles.time}>{moment(occurrence.timestamp).calendar()}</Text>
+        <Text style={styles.time}>{moment(occurrence.time).calendar()}</Text>
       </View>
     </TouchableHighlight>
   );
@@ -42,7 +42,7 @@ function renderSentence(sentence, navigate, selectSentence) {
 
 export default function ({ navigate, sentences, selectSentence }: Props) {
   if (!sentences.length) return null;
-  sentences.sort((a, b) => lastOccurrence(a).timestamp - lastOccurrence(b).timestamp);
+  sentences.sort((a, b) => lastOccurrence(a).time - lastOccurrence(b).time);
   return (
     <View>
       {sentences.map((sentence) => renderSentence(sentence, navigate, selectSentence))}

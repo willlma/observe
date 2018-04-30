@@ -1,10 +1,8 @@
 // @flow
 import { createSelector } from 'reselect';
 import moment from 'moment';
-import { cloze } from 'src/libs/constants';
+import { cloze, splitter } from 'src/libs/constants';
 import { getSentence, getSentences } from './homeSelectors';
-
-const splitter = ' ';
 
 const getWords = ({ text }) => text.split(splitter);
 
@@ -71,8 +69,8 @@ export const getWeekData = createSelector(getSentence, (sentence) => {
   for (let i = daysPerWeek; i--;) {
     weekData.push({ x: moment().subtract(i, 'days').format('dd'), y: 0 });
   }
-  sentence.occurrences.forEach(({ timestamp, quantities }) => {
-    const time = moment(timestamp);
+  sentence.occurrences.forEach(({ time, quantities }) => {
+    time = moment(time);
     if (time.isBefore(weekAgo)) return;
     const index = daysPerWeek - 1 - moment().diff(time, 'days');
     weekData[index].y += quantities[0];

@@ -3,31 +3,38 @@ import ActionTypes from 'src/libs/actionTypes';
 import cloneDeep from 'lodash/cloneDeep';
 import type { Sentence, Action } from 'src/libs/types';
 
-type sentencesAction = Action & {
-  sentences?: Sentence[],
-  quantities?: number[],
-  text?: string,
-  timestamp?: number,
-  index?: number
-}
+type SentencesAction =
+  | { type: typeof ActionTypes.sentences, sentences: Sentence[] }
+  | {
+      type: typeof ActionTypes.appendSentence,
+      quantities: number[],
+      text: string,
+      time: Date,
+    }
+  | {
+      type: typeof ActionTypes.mergeSentence,
+      index: number,
+      quantities: number[],
+      time: Date,
+    }
 
-export function sentences(state: Sentence[] = [], action: sentencesAction) {
+export function sentences(state: Sentence[] = [], action: SentencesAction) {
   switch (action.type) {
     case ActionTypes.sentences: return cloneDeep(action.sentences);
     case ActionTypes.appendSentence: {
-      const { text, timestamp, quantities } = action;
+      const { text, time, quantities } = action;
       const newState = cloneDeep(state);
       newState.push({
         text,
-        occurrences: [{ timestamp, quantities }],
+        occurrences: [{ time, quantities }],
         id: state.length + 1
       });
       return newState;
     }
     case ActionTypes.mergeSentence: {
-      const { index, timestamp, quantities } = action;
+      const { index, time, quantities } = action;
       const newState = cloneDeep(state);
-      newState[index].occurrences.push({ timestamp, quantities });
+      newState[index].occurrences.push({ time, quantities });
       return newState;
     }
     default: return state;

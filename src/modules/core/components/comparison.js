@@ -1,31 +1,33 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { VictoryPie, VictoryTheme } from 'victory-native';
-import { showBlanks } from 'src/libs/helpers';
-import type { Datum, Diff } from 'src/libs/types';
+import { showBlanks, getSentence } from 'src/libs/helpers';
+import { cloze, splitter } from 'src/libs/constants';
+import type { Datum, Diff, Sentence } from 'src/libs/types';
 
 type Props = {
   commonSubstr: string,
-  diffs: Diff[]
+  diffs: Diff[],
+  sentences: Sentence[]
 }
 
 type State = { labelIndex: number }
 
-export default class Comparison extends PureComponent<Props, State> {
+export default class Comparison extends Component<Props, State> {
   LABEL_TYPES_LENGTH = 3;
 
   state = { labelIndex: 0 }
 
+  onPress = () => {
+    const { labelIndex } = this.state;
+    const newIndex = labelIndex === this.LABEL_TYPES_LENGTH - 1 ? 0 : labelIndex + 1;
+    console.log(`newIndex: ${newIndex}`);
+    this.setState({ labelIndex: newIndex });
+  }
   events = [{
-    target: 'data', //'labels']
-    eventHandlers: {
-      onPress: () => {
-        const { labelIndex } = this.state;
-        const newIndex = labelIndex === this.LABEL_TYPES_LENGTH - 1 ? 0 : labelIndex + 1;
-        this.setState({ labelIndex: newIndex });
-      }
-    }
+    target: 'data',
+    eventHandlers: { onPress: this.onPress }
   }]
 
   render() {
@@ -36,12 +38,12 @@ export default class Comparison extends PureComponent<Props, State> {
         <VictoryPie
           events={this.events}
           height={200}
-          width={300}
           theme={VictoryTheme.material}
           data={diffs}
           labels={this.label}
+          padding={{ top: 20, left: 50, right: 50, bottom: 50 }}
           x='substring'
-          y='ids.length'
+          y={this.getY}
         />
       </View>
     );
@@ -54,9 +56,22 @@ export default class Comparison extends PureComponent<Props, State> {
     );
     const proportion = y / total;
     return [
-      showBlanks(x.substr(0, 20)),
+      showBlanks(x).split(splitter).slice(0, 5).join(splitter),
       y,
       `${Math.round(proportion * 100)}%`
     ][this.state.labelIndex];
+  }
+
+  quantitySum = (id: number) => {
+    const { sentences } = this.props;
+    const sentence = getSentence(id, sentences);
+    return sentence && sentence.occurrences.reduce((sum, { quantities }) => sum + quantities[0], 0);
+  }
+
+  getY = ({ ids }: Diff) => {
+    const { commonSubstr } = this.props;
+    return commonSubstr.includes(cloze.digit) ?
+      ids.reduce((sum, id) => sum + this.quantitySum(id), 0) :
+      ids.length;
   }
 }

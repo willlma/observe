@@ -19,7 +19,7 @@
     "no-plusplus": 0,
     "no-trailing-spaces": [1, { "skipBlankLines": true }],
     "no-unused-vars": 1,
-    "object-curly-newline": ["warn", { "multiline": true }],
+    "object-curly-newline": 0,
     "one-var": ["warn", { initialized: "never" }],
     "one-var-declaration-per-line": ["warn", "initializations"],
     "padded-blocks": 1,
