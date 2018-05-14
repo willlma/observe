@@ -1,8 +1,9 @@
 // @flow
 export default {
-  appendSentence: 'APPEND_SENTENCE',
+  addSentence: 'ADD_SENTENCE',
   comparisons: 'COMPARISONS',
-  mergeSentence: 'MERGE_SENTENCE',
+  is24Hour: 'IS_24_HOUR',
+  updateSentence: 'UPDATE_SENTENCE',
   sentences: 'SENTENCES',
   selectedSentenceId: 'SELECTED_SENTENCE_ID',
 };

@@ -10,3 +10,4 @@ export const Regex = {
 };
 
 export const splitter = ' ';
+export const day = 'day';

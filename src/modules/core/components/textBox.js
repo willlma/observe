@@ -2,15 +2,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, TextInput, Keyboard } from 'react-native';
 import { inputFontSize, marginWidth } from 'src/styles/variables';
-import { white } from 'src/styles/colors';
+import { white, transparent } from 'src/styles/colors';
 
 type Props = { addSentence: Function }
 type State = { text: string }
 
 class TextBox extends Component<Props, State> {
-  state = {
-    text: '',
-  };
+  state = { text: '' };
 
   render = () => (
     <TextInput
@@ -20,7 +18,7 @@ class TextBox extends Component<Props, State> {
       onChangeText={this.onChangeText}
       style={styles.input}
       placeholderTextColor='#AAA'
-      underlineColorAndroid='transparent'
+      underlineColorAndroid={transparent}
     >
       {this.state.text}
     </TextInput>

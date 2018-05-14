@@ -9,16 +9,18 @@ import HomeContainer from './src/modules/core/containers/homeContainer';
 import DetailedChartsContainer from './src/modules/core/containers/detailedChartsContainer';
 import * as homeReducers from './src/modules/core/reducers/homeReducers';
 import * as detailedChartsReducers from './src/modules/core/reducers/detailedChartsReducers';
+import * as settingsReducers from './src/reducers/settingsReducers';
 import { setItem } from './src/services/storage';
 import { startup } from './src/modules/core/actionCreators/actionCreators';
 // TODO: remove YellowBox in next react-navigation update. See https://github.com/react-navigation/react-navigation/issues/3956
-// import { YellowBox } from 'react-native';
-// YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
-console.ignoredYellowBox = ['Remote debugger'];
-console.ignoredYellowBox = ['Warning: isMounted(...) is deprecated'];
+console.ignoredYellowBox = ['Remote debugger', 'Warning: isMounted'];
 
-const initialState = undefined;//{ sentences: [{"text":"I walked my dog","occurrences":[{"timestamp":1523485162828,"quantities":[1]}],"id":1},{"text":"I walked my cat","occurrences":[{"timestamp":1523485167920,"quantities":[1]}],"id":2},{"text":"I ran \\d miles","occurrences":[{"timestamp":1523485174797,"quantities":[2]}],"id":3},{"text":"I walked \\d miles","occurrences":[{"timestamp":1523485180059,"quantities":[4]}],"id":4},{"text":"I ate \\dg of sugar","occurrences":[{"timestamp":1523485190486,"quantities":[6]},{"timestamp":1523398941967,"quantities":[7]}],"id":5}] };
-const rootReducer = combineReducers({ ...homeReducers, ...detailedChartsReducers });
+const initialState = undefined;
+const rootReducer = combineReducers({
+  ...detailedChartsReducers,
+  ...homeReducers,
+  ...settingsReducers
+});
 const store = createStore(rootReducer, initialState, applyMiddleware(thunk));
 store.subscribe(throttle(() => {
   setItem('sentences', store.getState().sentences);

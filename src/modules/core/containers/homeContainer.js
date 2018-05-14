@@ -15,10 +15,7 @@ const HomeContainer = (props: Props) => (
   <HomeContent {...props} />
 );
 
-HomeContainer.navigationOptions = {
-  title: 'Welcome',
-  headerVisible: false
-};
+HomeContainer.navigationOptions = { header: null };
 
 const mapStateToProps = (state) => ({ sentences: state.sentences });
 

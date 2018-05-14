@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { VictoryBar, VictoryChart, VictoryAxis } from 'victory-native';
+import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis } from 'victory-native';
 import type { Datum } from 'src/libs/types';
 
 const tickCount = (weekData) => {
@@ -10,7 +10,11 @@ const tickCount = (weekData) => {
 
 const tickFormat = (tick) => (Number.isInteger(tick) ? tick : null);
 
-export default function ({ weekData }: { weekData: Datum[] }) {
+type Props = { isDiscrete: boolean, weekData: Datum[] }
+
+export default function ({ isDiscrete, weekData }: Props) {
+  const ChartType = isDiscrete ? VictoryBar : VictoryLine;
+
   return (
     <VictoryChart
       domainPadding={16}
@@ -24,7 +28,7 @@ export default function ({ weekData }: { weekData: Datum[] }) {
         tickCount={tickCount(weekData)}
         tickFormat={tickFormat}
       />
-      <VictoryBar data={weekData} />
+      <ChartType data={weekData} />
     </VictoryChart>
   );
 }

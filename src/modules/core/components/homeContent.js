@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { ScrollView, View, StyleSheet, Keyboard } from 'react-native';
 import type { Sentence } from 'src/libs/types';
 import TextBox from '../components/textBox';
-import SentenceList from '../components/sentenceList';
+import Sentences from '../components/sentences';
 
 type Props = {
   sentences: Sentence[],
@@ -30,7 +30,7 @@ export default class HomeContent extends PureComponent<Props> {
           ref={(ref) => this.scrollView = ref}
           style={styles.scrollView}
         >
-          <SentenceList
+          <Sentences
             navigate={navigation.navigate}
             sentences={sentences}
             selectSentence={selectSentence}

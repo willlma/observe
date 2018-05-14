@@ -17,11 +17,8 @@ export default ({ comparisons, sentences }: Props) =>
           key={commonSubstr}
           commonSubstr={commonSubstr}
           diffs={diffs}
-          sentences={sentences} 
+          sentences={sentences}
         />
       ))}
     </View>
   );
-
-
-// const styles = StyleSheet.create({});

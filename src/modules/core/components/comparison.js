@@ -65,7 +65,10 @@ export default class Comparison extends Component<Props, State> {
   quantitySum = (id: number) => {
     const { sentences } = this.props;
     const sentence = getSentence(id, sentences);
-    return sentence && sentence.occurrences.reduce((sum, { quantities }) => sum + quantities[0], 0);
+    return (
+      sentence &&
+      sentence.occurrences.reduce((sum, { quantities }) => sum + quantities[0], 0)
+    );
   }
 
   getY = ({ ids }: Diff) => {
