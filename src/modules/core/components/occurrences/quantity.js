@@ -6,10 +6,9 @@ import { normalFontSize } from 'src/styles/variables';
 import type { Style } from 'src/libs/types';
 
 type Props = {
-  index: number,
   quantity: number,
   styles: Style,
-  updateQuantity: (number, number) => void
+  updateQuantity: (number) => void
 };
 
 type State = { isFocused: boolean, value: string }
@@ -26,6 +25,7 @@ export default class Quantity extends PureComponent<Props, State> {
       <View style={styles.row}>
         <Text style={styles.text}>: </Text>
         <TextInput
+          keyboardType='numeric'
           onBlur={this.onBlur}
           onChangeText={this.onChangeText}
           onFocus={this.onFocus}
@@ -38,11 +38,11 @@ export default class Quantity extends PureComponent<Props, State> {
   }
 
   onChangeText = (text: string) => {
-    const { index, updateQuantity } = this.props;
+    const { updateQuantity } = this.props;
     const quantity = Number.parseFloat(text);
     if (quantity.toString() === text) {
       // TODO: validation
-      updateQuantity(index, quantity);
+      updateQuantity(quantity);
     }
     this.setState({ value: text });
   }

@@ -1,9 +1,14 @@
 // @flow
 import React from 'react';
-import { ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import { doubleMarginWidth } from 'src/styles/variables';
-import type { Comparison, Datum, Occurrence, Sentence } from 'src/libs/types';
+import { gray, white } from 'src/styles/colors';
+import type {
+  Comparison,
+  Datum,
+  Navigation,
+  Occurrence,
+  Sentence
+} from 'src/libs/types';
 import { getSentence } from '../selectors/homeSelectors';
 import {
   getComparisons,
@@ -11,42 +16,43 @@ import {
   isDiscrete
 } from '../selectors/detailedChartsSelectors';
 import * as detailedChartsActionCreators from '../actionCreators/detailedChartsActionCreators';
-import DetailedChartsTitle from '../components/detailedChartsTitle';
-import WeekChart from '../components/weekChart';
-import ComparisonList from '../components/comparisonList';
-import Occurrences from '../components/occurrences';
+import DetailedChartsContent from '../components/detailedChartsContent';
+import HeaderTitle from '../components/detailedChartsHeader/title';
+import HeaderLeft from '../components/detailedChartsHeader/left';
+import DeleteOccurrences from '../components/detailedChartsHeader/deleteOccurrences';
+import GeneralActions from '../components/detailedChartsHeader/generalActions';
 
 type Props = {
   comparisons: Comparison[],
-  occurrences: Occurrence[],
+  is24Hour: boolean,
   isDiscrete: boolean,
+  navigation: Navigation,
+  occurrences: Occurrence[],
+  selectedOccurrences: number[],
   sentences: Sentence[],
   weekData: Datum[],
-  is24Hour: boolean,
+  toggleOccurrenceSelected: (number) => void,
   updateOccurrence: (occurrenceIndex: number, occurrence: Occurrence) => void
 }
-const DetailedChartsContainer = ({
-  comparisons,
-  isDiscrete: discrete,
-  occurrences,
-  sentences,
-  is24Hour,
-  weekData,
-  updateOccurrence,
-}: Props) => (
-  <ScrollView style={{ padding: doubleMarginWidth }}>
-    <WeekChart isDiscrete={discrete} weekData={weekData} />
-    <ComparisonList comparisons={comparisons} sentences={sentences} />
-    <Occurrences
-      isDiscrete={discrete}
-      occurrences={occurrences}
-      is24Hour={is24Hour}
-      updateOccurrence={updateOccurrence}
-    />
-  </ScrollView>
-);
 
-DetailedChartsContainer.navigationOptions = { headerTitle: DetailedChartsTitle };
+const DetailedChartsContainer = (props: Props) =>
+  <DetailedChartsContent {...props} />;
+
+DetailedChartsContainer.navigationOptions = ({ navigation }) => {
+  const { params = {} } = navigation.state;
+  if (params.selectMode) {
+    return {
+      headerLeft: HeaderLeft,
+      headerRight: <DeleteOccurrences navigation={navigation} />,
+      headerTintColor: white,
+      headerStyle: { backgroundColor: gray }
+    };
+  }
+  return {
+    headerTitle: HeaderTitle,
+    headerRight: <GeneralActions navigation={navigation} />
+  };
+};
 
 const mapStateToProps = (state) => ({
   weekData: getWeekData(state),
@@ -54,6 +60,7 @@ const mapStateToProps = (state) => ({
   isDiscrete: isDiscrete(state),
   occurrences: getSentence(state).occurrences,
   sentences: state.sentences,
+  selectedOccurrences: state.selectedOccurrences,
   is24Hour: state.is24Hour
 });
 

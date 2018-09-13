@@ -1,14 +1,16 @@
 // @flow
 import ActionTypes from 'src/libs/actionTypes';
 import { getItem } from 'src/services/storage';
-import { replaceNumbersAndTime } from 'src/libs/helpers';
+import {
+  removeIndices,
+  replaceNumbersAndTime,
+  sortOccurrences
+} from 'src/libs/helpers';
 import type { ThunkAction } from 'src/libs/types';
 
 export const startup = (): ThunkAction => (dispatch) => {
-  const getItemPromise = getItem('sentences');
-  console.log(`getItemPromise: ${getItemPromise}`);
-  getItemPromise.then((sentences) => {
-    // console.dir(sentences);
+  return getItem('sentences').then((sentences) => {
+    console.dir(sentences);
     if (sentences) {
       sentences = sentences.map((sentence) => ({
         ...sentence,
@@ -18,7 +20,9 @@ export const startup = (): ThunkAction => (dispatch) => {
         }))
       }));
       dispatch({ type: ActionTypes.sentences, sentences });
+      // dispatch(selectSentence(1));
     }
+    // dispatch({ type: ActionTypes.storageReady, storageReady: true });
   }).catch((err) => {
     console.log('failed to get sentences from local storage. Error:');
     console.log(err);
@@ -32,7 +36,7 @@ export const addSentence = (text: string): ThunkAction => (dispatch, getState) =
   if (index !== -1) {
     const sentence = sentences[index];
     sentence.occurrences.push({ time, quantities });
-    sentence.occurrences.sort((a, b) => a.time - b.time);
+    sortOccurrences(sentence.occurrences);
     dispatch({ type: ActionTypes.updateSentence, index, sentence });
   } else {
     dispatch({
@@ -50,3 +54,10 @@ export const addSentence = (text: string): ThunkAction => (dispatch, getState) =
 export const selectSentence = (id: number) => (
   { type: ActionTypes.selectedSentenceId, id }
 );
+
+export const deleteSentences = (indices: number[]): ThunkAction =>
+  (dispatch, getState) => {
+    let { sentences } = getState();
+    sentences = removeIndices(sentences, indices);
+    dispatch({ type: ActionTypes.sentences, sentences });
+  };

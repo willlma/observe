@@ -1,7 +1,9 @@
 // @flow
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { halfMarginWidth } from 'src/styles/variables';
 import type { Comparison as ComparisonT, Sentence } from 'src/libs/types';
+import Card from './card';
 import Comparison from './comparison';
 
 type Props = {
@@ -9,9 +11,9 @@ type Props = {
   sentences: Sentence[]
 }
 
-export default ({ comparisons, sentences }: Props) =>
-  comparisons && (
-    <View>
+export default ({ comparisons, sentences }: Props) => (
+  comparisons.length ?
+    <Card style={styles.card}>
       {comparisons.map(({ commonSubstr, diffs }) => (
         <Comparison
           key={commonSubstr}
@@ -20,5 +22,10 @@ export default ({ comparisons, sentences }: Props) =>
           sentences={sentences}
         />
       ))}
-    </View>
-  );
+    </Card> :
+    null
+);
+
+const styles = StyleSheet.create({
+  card: { padding: halfMarginWidth }
+});

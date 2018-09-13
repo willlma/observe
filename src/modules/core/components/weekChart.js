@@ -2,6 +2,7 @@
 import React from 'react';
 import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis } from 'victory-native';
 import type { Datum } from 'src/libs/types';
+import { gray } from 'src/styles/colors';
 
 const tickCount = (weekData) => {
   const max = Math.max(...weekData.map((datum) => datum.y)) + 1;
@@ -35,5 +36,5 @@ export default function ({ isDiscrete, weekData }: Props) {
 
 const yAxisStyle = {
   labels: { textAnchor: 'middle' },
-  grid: { stroke: (tick) => tickFormat(tick) && '#ccc' }
+  grid: { stroke: (tick) => tickFormat(tick) && gray }
 };

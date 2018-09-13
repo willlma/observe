@@ -8,7 +8,7 @@ export const showBlanks = (text: string) =>
   text.replace(cloze.word, '[…]').replace(cloze.digit, 'x');
 
 export const getSentence = (id: number, sentences: Sentence[]) =>
-  sentences.find((sen) => sen.id === id);
+  sentences.find((sen) => sen.id === id) || { occurrences: [] };
 
 export const lastOccurrence = (sentence: Sentence) => {
   const { occurrences } = sentence;
@@ -39,3 +39,16 @@ export function replaceNumbersAndTime(text: string) {
   if (!quantities.length) quantities.push(1);
   return { genericText: text, quantities, time };
 }
+
+export function removeIndices(array: Array<any>, indices: number[]): Array<any> {
+  let i = 0;
+  indices.sort();
+  return array.filter((item, index) => {
+    if (indices[i] !== index) return true;
+    i++;
+    return false;
+  });
+}
+
+export const sortOccurrences = (occurrences: Occurrence[]) =>
+  occurrences.sort((a, b) => b.time - a.time);

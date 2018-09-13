@@ -13,6 +13,7 @@ class TextBox extends Component<Props, State> {
   render = () => (
     <TextInput
       autoCapitalize='sentences' //autoFocus
+      blurOnSubmit={false}
       placeholder='What have you been up to?'
       onSubmitEditing={this.onSubmit}
       onChangeText={this.onChangeText}
@@ -25,9 +26,10 @@ class TextBox extends Component<Props, State> {
   );
 
   onSubmit = () => {
-    this.props.addSentence(this.state.text.trim());
+    const text = this.state.text.trim();
+    if (text) this.props.addSentence(this.state.text.trim());
     this.setState({ text: '' });
-    Keyboard.dismiss();
+    // Keyboard.dismiss();
   };
 
   onChangeText = (text: string) => {
@@ -38,14 +40,10 @@ class TextBox extends Component<Props, State> {
 const styles = StyleSheet.create({
   input: {
     fontSize: inputFontSize,
-    // margin: marginWidth,
-    // marginTop: 100,
-    // marginBottom: doubleMarginWidth,
     paddingLeft: marginWidth,
     paddingRight: marginWidth,
-    elevation: 5,
-    // maxWidth: 500,
     backgroundColor: white,
+    height: 50
   },
 });
 

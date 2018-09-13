@@ -4,7 +4,7 @@ import moment from 'moment';
 import { cloze, day, splitter } from 'src/libs/constants';
 import { getSentence, getSentences } from './homeSelectors';
 
-const getWords = ({ text }) => text.split(splitter);
+const getWords = ({ text = '' }) => text.split(splitter);
 
 function getPointer(baseWords, words) {
   let pointer;

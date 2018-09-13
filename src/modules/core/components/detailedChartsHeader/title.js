@@ -11,11 +11,15 @@ import { inputFontSize } from 'src/styles/variables';
 import { lastOccurrence, lastOccurrenceText, showBlanks } from 'src/libs/helpers';
 import type { Action, Sentence } from 'src/libs/types';
 
-type Props = { sentence: Sentence, updateText: (string) => Action }
+type Props = {
+  sentence: Sentence,
+  selectMode: boolean,
+  updateText: (string) => Action
+};
 type State = { isFocused: boolean, text: string }
 
 
-class DetailedChartsTitle extends PureComponent<Props, State> {
+class HeaderTitle extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,8 +27,9 @@ class DetailedChartsTitle extends PureComponent<Props, State> {
       text: showBlanks(props.sentence.text)
     };
   }
+
   render() {
-    return (
+    return !this.props.selectMode &&
       <TextInput
         onBlur={this.onBlur}
         onChangeText={this.onChangeText}
@@ -32,8 +37,7 @@ class DetailedChartsTitle extends PureComponent<Props, State> {
         style={styles.inputFontSize}
         value={this.state.text}
         underlineColorAndroid={this.state.isFocused ? undefined : transparent}
-      />
-    );
+      />;
   }
 
   editingText = (sentence) => lastOccurrenceText(lastOccurrence(sentence), sentence)
@@ -60,7 +64,8 @@ class DetailedChartsTitle extends PureComponent<Props, State> {
 const styles = StyleSheet.create({ inputFontSize: { fontSize: inputFontSize } });
 
 const mapStateToProps = (state) => ({
-  sentence: getSentence(state)
+  sentence: getSentence(state),
+  selectMode: !!state.selectedOccurrences.length
 });
 
-export default connect(mapStateToProps, { updateText })(DetailedChartsTitle);
+export default connect(mapStateToProps, { updateText })(HeaderTitle);

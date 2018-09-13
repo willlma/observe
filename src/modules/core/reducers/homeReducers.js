@@ -3,6 +3,18 @@ import ActionTypes from 'src/libs/actionTypes';
 import cloneDeep from 'lodash/cloneDeep';
 import type { Sentence } from 'src/libs/types';
 
+type StorageReadyAction = {
+  type: typeof ActionTypes.storageReady,
+  storageReady: boolean
+};
+
+export function storageReady(state: boolean = true, action: StorageReadyAction) {
+  switch (action.type) {
+    case ActionTypes.storageReady: return action.storageReady;
+    default: return state;
+  }
+}
+
 type SentencesAction =
   | { type: typeof ActionTypes.sentences, sentences: Sentence[] }
   | {
@@ -42,9 +54,7 @@ export function selectedSentenceId(
   action: selectAction
 ): ?number {
   switch (action.type) {
-    case ActionTypes.selectedSentenceId:
-      return action.id;
-    default:
-      return state;
+    case ActionTypes.selectedSentenceId: return action.id;
+    default: return state;
   }
 }

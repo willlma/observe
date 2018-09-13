@@ -27,6 +27,7 @@
     "one-var-declaration-per-line": ["warn", "initializations"],
     "padded-blocks": 1,
     "prefer-template": 0,
+    "react/require-default-props": 0,
     "react/jsx-no-bind": 1,
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/no-unused-prop-types": 1,

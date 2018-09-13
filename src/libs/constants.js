@@ -1,4 +1,7 @@
 // @flow
+
+import { Platform } from 'react-native';
+
 export const cloze = {
   word: '\\w',
   digit: '\\d'
@@ -11,3 +14,6 @@ export const Regex = {
 
 export const splitter = ' ';
 export const day = 'day';
+export const android = 'android';
+export const ios = 'ios';
+export const iconPrefix = `${Platform.OS === ios ? ios : 'md'}-`;

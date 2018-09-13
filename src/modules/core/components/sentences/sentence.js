@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { StyleSheet, TouchableHighlight, View, Text } from 'react-native';
+import { Keyboard, StyleSheet, TouchableHighlight, Text } from 'react-native';
 import moment from 'moment';
 import type { Action, Occurrence } from 'src/libs/types';
 import {
@@ -8,7 +8,7 @@ import {
   normalFontSize,
   halfMarginWidth
 } from 'src/styles/variables';
-import { white } from 'src/styles/colors';
+import Card from '../card';
 
 type Props = {
   id: number,
@@ -20,16 +20,13 @@ type Props = {
 
 export default class Sentence extends PureComponent<Props> {
   render() {
-    const { id, occurrence, text } = this.props;
+    const { occurrence, text } = this.props;
     return (
-      <TouchableHighlight
-        key={`sentence-${id}`}
-        onPress={this.onPress}
-      >
-        <View style={styles.background}>
+      <TouchableHighlight onPress={this.onPress}>
+        <Card style={styles.card}>
           <Text style={styles.text}>{text}</Text>
           <Text style={styles.time}>{moment(occurrence.time).fromNow()}</Text>
-        </View>
+        </Card>
       </TouchableHighlight>
     );
   }
@@ -38,17 +35,13 @@ export default class Sentence extends PureComponent<Props> {
     const { navigate, id, selectSentence } = this.props;
     selectSentence(id);
     navigate('DetailedCharts');
+    // Keyboard.dismiss();
   }
 }
 
 const styles = StyleSheet.create({
-  background: {
-    backgroundColor: white,
-    // elevation: 2,
-    padding: halfMarginWidth,
-    margin: 3,
-    marginBottom: 0,
-    borderRadius: 2,
+  card: {
+    padding: halfMarginWidth
   },
   text: {
     alignSelf: 'flex-start',

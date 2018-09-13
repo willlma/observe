@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
 import moment from 'moment';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import { white } from 'src/styles/colors';
 import type { Style } from 'src/libs/types';
 
 const modes = {
@@ -12,11 +13,10 @@ const modes = {
 };
 
 type Props = {
-  index: number,
   styles: Style,
   time: Date,
   is24Hour: boolean,
-  updateDate: (number, Date) => void
+  updateDate: (Date) => void
 };
 
 type State = {
@@ -35,18 +35,18 @@ export default class Time extends PureComponent<Props, State> {
     const separatorIndex = calendarDate.indexOf(dateTimeSeperator);
     if (separatorIndex === -1) {
       return (
-        <TouchableHighlight onPress={this.onDateTimePress}>
+        <TouchableHighlight onPress={this.onDateTimePress} underlayColor={white}>
           <Text style={styles.text}>{calendarDate}</Text>
         </TouchableHighlight>
       );
     }
     return (
       <View style={styles.row}>
-        <TouchableHighlight onPress={this.onDatePress}>
+        <TouchableHighlight onPress={this.onDatePress} underlayColor={white}>
           <Text style={styles.text}>{calendarDate.substr(0, separatorIndex)}</Text>
         </TouchableHighlight>
         <Text style={styles.text}>{dateTimeSeperator}</Text>
-        <TouchableHighlight onPress={this.onTimePress}>
+        <TouchableHighlight onPress={this.onTimePress} underlayColor={white}>
           <Text style={styles.text}>
             {calendarDate.substr(separatorIndex + dateTimeSeperator.length)}
           </Text>
@@ -92,12 +92,12 @@ export default class Time extends PureComponent<Props, State> {
   }
 
   onConfirm = (date: Date) => {
-    const { index, updateDate } = this.props;
+    const { updateDate } = this.props;
     const { datePickerMode } = this.state;
     const newDate = (datePickerMode === modes.date && this.updateDate(date))
       || (datePickerMode === modes.time && this.updateTime(date))
       || date;
-    updateDate(index, newDate);
+    updateDate(newDate);
     this.resetMode();
   }
 }

@@ -3,7 +3,7 @@ import { AppRegistry } from 'react-native';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import throttle from 'lodash/throttle';
 import HomeContainer from './src/modules/core/containers/homeContainer';
 import DetailedChartsContainer from './src/modules/core/containers/detailedChartsContainer';
@@ -27,13 +27,10 @@ store.subscribe(throttle(() => {
 }, 1000));
 store.dispatch(startup());
 
-const AppNavigator = StackNavigator({
+const AppNavigator = createStackNavigator({
   Home: { screen: HomeContainer },
   DetailedCharts: { screen: DetailedChartsContainer }
-}, {
-  headerMode: 'screen',
-  // navigationOptions: { headerVisible: false }
-});
+}, { headerMode: 'screen' });
 
 const observe = () => <Provider store={store}><AppNavigator /></Provider>;
 
