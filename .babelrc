@@ -1,7 +1,7 @@
 {
   "presets": [
-    "flow",
-    "react-native",
+    "@babel/preset-flow",
+    "module:metro-react-native-babel-preset",
   ],
   "plugins": ["functional-hmr"]
 }
