@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { FlatList } from 'react-native';
 import type { Navigation, Occurrence as OccurrenceT } from 'src/libs/types';
 import { sortOccurrences } from 'src/libs/helpers';
@@ -16,24 +16,25 @@ type Props = {
   toggleOccurrenceSelected: (number) => void
 };
 
-export default class Occurrences extends Component<Props> {
-  wasSelectMode = false
-  // componentDidUpdate(props: Props) {
-  //   TODO: wrong props are being supplied. Once this bug is fixed, remove
-  //   this.wasSelectMode logic and revert to PureComponent
-  //   const { navigation, selectedOccurrences } = this.props;
-  //   const wasSelectMode = !!props.selectedOccurrences.length;
-  //   const selectMode = !!selectedOccurrences.length;
-  //   if (wasSelectMode !== selectMode) navigation.setParams({ selectMode });
-  // }
+export default class Occurrences extends PureComponent<Props> {
+  // wasSelectMode = false
+
+  componentDidUpdate(props: Props) {
+    // TODO: wrong props are being supplied. Once this bug is fixed, remove
+    // this.wasSelectMode logic and revert to PureComponent
+    const { navigation, selectedOccurrences } = this.props;
+    const wasSelectMode = !!props.selectedOccurrences.length;
+    const selectMode = !!selectedOccurrences.length;
+    if (wasSelectMode !== selectMode) navigation.setParams({ selectMode });
+  }
 
   render() {
-    const { navigation, selectedOccurrences } = this.props;
+    /*const { navigation, selectedOccurrences } = this.props;
     const selectMode = !!selectedOccurrences.length;
     if (this.wasSelectMode !== selectMode) {
       this.wasSelectMode = selectMode;
       navigation.setParams({ selectMode });
-    }
+    }*/
     return (
       <Card>
         <FlatList

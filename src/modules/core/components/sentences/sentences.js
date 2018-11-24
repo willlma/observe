@@ -28,6 +28,7 @@ export default class SentenceList extends PureComponent<Props> {
   componentWillUpdate() {
     // LayoutAnimation.easeInEaseOut();
   }
+
   render() {
     const { sentences } = this.props;
     // if (!sentences.length) return null;
@@ -44,8 +45,8 @@ export default class SentenceList extends PureComponent<Props> {
 
   keyExtractor = ({ id }: SentenceT) => `sentence-${id}`
 
-  timeSort = (a: SentenceT, b: SentenceT) =>
-    lastOccurrence(a).time - lastOccurrence(b).time
+timeSort = (a: SentenceT, b: SentenceT) =>
+  lastOccurrence(a).time - lastOccurrence(b).time;
 
   renderSentence = ({ item: sentence }: Object) => {
     const { navigate, selectSentence } = this.props;

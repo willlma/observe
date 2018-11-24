@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { StyleSheet, TextInput, Keyboard } from 'react-native';
-import { inputFontSize, marginWidth } from 'src/styles/variables';
+import { doubleMarginWidth, inputFontSize, marginWidth } from 'src/styles/variables';
 import { white, transparent } from 'src/styles/colors';
 
 type Props = { addSentence: Function }
@@ -10,20 +10,22 @@ type State = { text: string }
 class TextBox extends Component<Props, State> {
   state = { text: '' };
 
-  render = () => (
-    <TextInput
-      autoCapitalize='sentences' //autoFocus
-      blurOnSubmit={false}
-      placeholder='What have you been up to?'
-      onSubmitEditing={this.onSubmit}
-      onChangeText={this.onChangeText}
-      style={styles.input}
-      placeholderTextColor='#AAA'
-      underlineColorAndroid={transparent}
-    >
-      {this.state.text}
-    </TextInput>
-  );
+  render() {
+    return (
+      <TextInput
+        autoCapitalize='sentences' //autoFocus
+        blurOnSubmit={false}
+        placeholder='What have you been up to?'
+        onSubmitEditing={this.onSubmit}
+        onChangeText={this.onChangeText}
+        style={styles.input}
+        placeholderTextColor='#AAA'
+        underlineColorAndroid={transparent}
+      >
+        {this.state.text}
+      </TextInput>
+    );
+  }
 
   onSubmit = () => {
     const text = this.state.text.trim();
@@ -40,10 +42,8 @@ class TextBox extends Component<Props, State> {
 const styles = StyleSheet.create({
   input: {
     fontSize: inputFontSize,
-    paddingLeft: marginWidth,
-    paddingRight: marginWidth,
+    padding: marginWidth,
     backgroundColor: white,
-    height: 50
   },
 });
 

@@ -1,11 +1,18 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
 import type { Sentence } from 'src/libs/types';
 import { inputFontSize, marginWidth } from 'src/styles/variables';
 import { navy, white } from 'src/styles/colors';
-import TextBox from '../components/textBox';
-import Sentences from '../components/sentences';
+import { ios } from 'src/libs/constants';
+import TextBox from './textBox';
+import Sentences from './sentences';
 
 type Props = {
   sentences: Sentence[],
@@ -14,15 +21,16 @@ type Props = {
   navigation: Object
 }
 
+const PlatformView = (props) => (Platform.OS === ios ?
+  <KeyboardAvoidingView behavior='padding' enabled {...props} /> :
+  <View {...props} />
+);
+
 export default class HomeContent extends PureComponent<Props> {
   render() {
     const { navigation, sentences, selectSentence, addSentence } = this.props;
     return (
-      <KeyboardAvoidingView
-        behavior='padding'
-        enabled
-        style={styles.container}
-      >
+      <PlatformView style={styles.container}>
         <Sentences
           navigate={navigation.navigate}
           sentences={sentences}
@@ -31,12 +39,13 @@ export default class HomeContent extends PureComponent<Props> {
         {!sentences.length &&
           <View>
             <Text style={styles.text}>
-              Eg: <Text style={styles.italic}>I ran 4 miles yesterday</Text>
+              Eg:
+              <Text style={styles.italic}> I ran 4 miles yesterday</Text>
             </Text>
           </View>
         }
         <TextBox addSentence={addSentence} />
-      </KeyboardAvoidingView>
+      </PlatformView>
     );
   }
 }
