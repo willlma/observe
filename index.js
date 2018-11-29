@@ -13,8 +13,6 @@ import * as settingsReducers from './src/reducers/settingsReducers';
 import { setItem } from './src/services/storage';
 import { startup } from './src/modules/core/actionCreators/actionCreators';
 import { white } from './src/styles/colors';
-// TODO: remove YellowBox in next react-navigation update. See https://github.com/react-navigation/react-navigation/issues/3956
-console.ignoredYellowBox = ['Remote debugger', 'Warning: isMounted'];
 
 const initialState = undefined;
 const rootReducer = combineReducers({
@@ -34,11 +32,11 @@ const AppNavigator = createAppContainer(createStackNavigator({
 }, { headerMode: 'screen' }));
 
 const observe = () => (
-  //<SafeAreaView style={{ flex: 1, backgroundColor: white }}>
+  <SafeAreaView style={{ flex: 1, backgroundColor: white }}>
     <Provider store={store}>
       <AppNavigator />
     </Provider>
-  // </SafeAreaView>
+  </SafeAreaView>
 );
 
 AppRegistry.registerComponent('observe', () => observe);

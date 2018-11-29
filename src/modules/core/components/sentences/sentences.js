@@ -31,11 +31,10 @@ export default class SentenceList extends PureComponent<Props> {
 
   render() {
     const { sentences } = this.props;
-    // if (!sentences.length) return null;
     return (
-      // <View style={styles.sentences}>
       <FlatList
         data={sentences.sort(this.timeSort)}
+        inverted
         keyExtractor={this.keyExtractor}
         renderItem={this.renderSentence}
         style={styles.sentences}
@@ -46,7 +45,7 @@ export default class SentenceList extends PureComponent<Props> {
   keyExtractor = ({ id }: SentenceT) => `sentence-${id}`
 
 timeSort = (a: SentenceT, b: SentenceT) =>
-  lastOccurrence(a).time - lastOccurrence(b).time;
+  lastOccurrence(b).time - lastOccurrence(a).time;
 
   renderSentence = ({ item: sentence }: Object) => {
     const { navigate, selectSentence } = this.props;
@@ -68,6 +67,5 @@ const styles = StyleSheet.create({
   sentences: {
     flex: 1,
     marginBottom: quarterMarginWidth,
-    flexDirection: 'column-reverse',
   }
 });

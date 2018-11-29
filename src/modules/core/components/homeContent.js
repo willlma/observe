@@ -22,7 +22,12 @@ type Props = {
 }
 
 const PlatformView = (props) => (Platform.OS === ios ?
-  <KeyboardAvoidingView behavior='padding' enabled {...props} /> :
+  <KeyboardAvoidingView
+    behavior='padding'
+    enabled
+    keyboardVerticalOffset={42}
+    {...props}
+  /> :
   <View {...props} />
 );
 
@@ -54,7 +59,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: navy,
-    // flexDirection: 'column-reverse'
   },
   text: {
     color: white,
