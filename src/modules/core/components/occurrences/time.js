@@ -26,13 +26,14 @@ type State = {
 export default class Time extends PureComponent<Props, State> {
   state = { datePickerMode: undefined }
 
-  render() {
-    const { styles, time, is24Hour } = this.props;
+  renderDateTime = () => {
+    const { styles, time } = this.props;
     const calendarDate = moment(time).calendar(null, {
       lastWeek: 'dddd [at] h:mm A'
     });
     const dateTimeSeperator = ' at ';
     const separatorIndex = calendarDate.indexOf(dateTimeSeperator);
+    const date = calendarDate.substr(0, separatorIndex);
     if (separatorIndex === -1) {
       return (
         <TouchableHighlight onPress={this.onDateTimePress} underlayColor={white}>
@@ -43,7 +44,7 @@ export default class Time extends PureComponent<Props, State> {
     return (
       <View style={styles.row}>
         <TouchableHighlight onPress={this.onDatePress} underlayColor={white}>
-          <Text style={styles.text}>{calendarDate.substr(0, separatorIndex)}</Text>
+          <Text style={styles.text}>{date}</Text>
         </TouchableHighlight>
         <Text style={styles.text}>{dateTimeSeperator}</Text>
         <TouchableHighlight onPress={this.onTimePress} underlayColor={white}>
@@ -51,6 +52,15 @@ export default class Time extends PureComponent<Props, State> {
             {calendarDate.substr(separatorIndex + dateTimeSeperator.length)}
           </Text>
         </TouchableHighlight>
+      </View>
+    );
+  }
+
+  render() {
+    const { time, is24Hour } = this.props;
+    return (
+      <View>
+        {this.renderDateTime()}
         <DateTimePicker
           date={time}
           is24Hour={is24Hour}

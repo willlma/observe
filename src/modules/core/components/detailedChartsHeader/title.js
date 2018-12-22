@@ -8,7 +8,7 @@ import {
 } from 'src/modules/core/actionCreators/detailedChartsActionCreators';
 import { transparent } from 'src/styles/colors';
 import { inputFontSize } from 'src/styles/variables';
-import { lastOccurrence, lastOccurrenceText, showBlanks } from 'src/libs/helpers';
+import { latestOccurrence, latestOccurrenceText, showBlanks } from 'src/libs/helpers';
 import type { Action, Sentence } from 'src/libs/types';
 
 type Props = {
@@ -40,7 +40,7 @@ class HeaderTitle extends PureComponent<Props, State> {
       />;
   }
 
-  editingText = (sentence) => lastOccurrenceText(lastOccurrence(sentence), sentence)
+  editingText = (sentence) => latestOccurrenceText(latestOccurrence(sentence), sentence)
 
   onFocus = () => {
     this.setState({

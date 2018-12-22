@@ -1,7 +1,7 @@
 //@flow
 import ActionTypes from 'src/libs/actionTypes';
 import {
-  lastOccurrence,
+  latestOccurrence,
   removeIndices,
   replaceNumbersAndTime,
   sortOccurrences
@@ -31,7 +31,7 @@ export const updateText = (text: string): ThunkAction => (dispatch, getState) =>
   const { index, sentence } = getIndexAndSentence(getState());
   const { genericText, quantities } = replaceNumbersAndTime(text);
   sentence.text = genericText;
-  lastOccurrence(sentence).quantities = quantities;
+  latestOccurrence(sentence).quantities = quantities;
   dispatch({ type: ActionTypes.updateSentence, index, sentence });
 };
 

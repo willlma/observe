@@ -23,7 +23,7 @@ export default class Sentence extends PureComponent<Props> {
     const { occurrence, text } = this.props;
     return (
       <TouchableHighlight onPress={this.onPress}>
-        <Card style={styles.card}>
+        <Card>
           <Text style={styles.text}>{text}</Text>
           <Text style={styles.time}>{moment(occurrence.time).fromNow()}</Text>
         </Card>
@@ -40,9 +40,6 @@ export default class Sentence extends PureComponent<Props> {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    padding: halfMarginWidth
-  },
   text: {
     alignSelf: 'flex-start',
     fontSize: normalFontSize,

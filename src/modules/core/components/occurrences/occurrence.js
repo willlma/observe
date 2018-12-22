@@ -1,8 +1,9 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { StyleSheet, TouchableHighlight, View } from 'react-native';
-import { normalFontSize, halfMarginWidth } from 'src/styles/variables';
-import { gray, navy, white, transparent } from 'src/styles/colors';
+import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import moment from 'moment';
+import { halfMarginWidth, marginWidth, normalFontSize } from 'src/styles/variables';
+import { gray, white } from 'src/styles/colors';
 import type { Occurrence as OccurrenceT } from 'src/libs/types';
 import Time from './time';
 import Quantity from './quantity';
@@ -24,7 +25,6 @@ export default class Occurrence extends PureComponent<Props> {
     const viewStyle = [
       styles.row,
       styles.item,
-      index && styles.border,
       isSelected && styles.selected
     ];
 
@@ -47,6 +47,9 @@ export default class Occurrence extends PureComponent<Props> {
               quantity={occurrence.quantities[0]}
               styles={styles}
             />
+          }
+          {!index &&
+            <Text style={styles.interval}>{moment(occurrence.time).fromNow()}</Text>
           }
         </View>
       </TouchableHighlight>
@@ -81,14 +84,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   item: {
-    paddingLeft: halfMarginWidth,
-    paddingRight: halfMarginWidth,
-  },
-  border: {
-    borderTopColor: gray,
-    borderTopWidth: 1,
+    alignItems: 'center',
   },
   text: { fontSize: normalFontSize, lineHeight: 50 },
+  interval: {
+    color: gray,
+    marginLeft: marginWidth,
+  },
   selected: {
     backgroundColor: gray
   }

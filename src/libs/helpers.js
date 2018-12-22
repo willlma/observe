@@ -10,12 +10,15 @@ export const showBlanks = (text: string) =>
 export const getSentence = (id: number, sentences: Sentence[]) =>
   sentences.find((sen) => sen.id === id) || { occurrences: [] };
 
-export const lastOccurrence = (sentence: Sentence) => {
+export const sortOccurrences = (occurrences: Occurrence[]) =>
+  occurrences.sort((a: Occurrence, b: Occurrence) => b.time - a.time);
+
+export const latestOccurrence = (sentence: Sentence) => {
   const { occurrences } = sentence;
-  return occurrences[occurrences.length - 1];
+  return sortOccurrences(occurrences)[0];
 };
 
-export const lastOccurrenceText = (occurrence: Occurrence, sentence: Sentence) =>
+export const latestOccurrenceText = (occurrence: Occurrence, sentence: Sentence) =>
   sentence.text.replace(cloze.digit, occurrence.quantities[0].toString());
 
 export function replaceNumbersAndTime(text: string) {
@@ -49,6 +52,3 @@ export function removeIndices(array: Array<any>, indices: number[]): Array<any> 
     return false;
   });
 }
-
-export const sortOccurrences = (occurrences: Occurrence[]) =>
-  occurrences.sort((a, b) => b.time - a.time);

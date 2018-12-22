@@ -8,7 +8,7 @@ import {
   UIManager,
   View
 } from 'react-native';
-import { lastOccurrence, lastOccurrenceText } from 'src/libs/helpers';
+import { latestOccurrence, latestOccurrenceText } from 'src/libs/helpers';
 import { android } from 'src/libs/constants';
 import type { Action, Sentence as SentenceT } from 'src/libs/types';
 import { quarterMarginWidth } from 'src/styles/variables';
@@ -44,12 +44,12 @@ export default class SentenceList extends PureComponent<Props> {
 
   keyExtractor = ({ id }: SentenceT) => `sentence-${id}`
 
-timeSort = (a: SentenceT, b: SentenceT) =>
-  lastOccurrence(b).time - lastOccurrence(a).time;
+  timeSort = (a: SentenceT, b: SentenceT) =>
+    latestOccurrence(b).time - latestOccurrence(a).time;
 
   renderSentence = ({ item: sentence }: Object) => {
     const { navigate, selectSentence } = this.props;
-    const occurrence = lastOccurrence(sentence);
+    const occurrence = latestOccurrence(sentence);
 
     return (
       <Sentence
@@ -57,7 +57,7 @@ timeSort = (a: SentenceT, b: SentenceT) =>
         navigate={navigate}
         occurrence={occurrence}
         selectSentence={selectSentence}
-        text={lastOccurrenceText(occurrence, sentence)}
+        text={latestOccurrenceText(occurrence, sentence)}
       />
     );
   }

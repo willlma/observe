@@ -1,9 +1,10 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 import type { Navigation, Occurrence as OccurrenceT } from 'src/libs/types';
 import { sortOccurrences } from 'src/libs/helpers';
 import Card from '../card';
+import Interval from './interval';
 import Occurrence from './occurrence';
 
 type Props = {
@@ -17,30 +18,13 @@ type Props = {
 };
 
 export default class Occurrences extends PureComponent<Props> {
-  // wasSelectMode = false
-
-  componentDidUpdate(props: Props) {
-    // TODO: wrong props are being supplied. Once this bug is fixed, remove
-    // this.wasSelectMode logic and revert to PureComponent
-    const { navigation, selectedOccurrences } = this.props;
-    const wasSelectMode = !!props.selectedOccurrences.length;
-    const selectMode = !!selectedOccurrences.length;
-    if (wasSelectMode !== selectMode) navigation.setParams({ selectMode });
-  }
-
   render() {
-    /*const { navigation, selectedOccurrences } = this.props;
-    const selectMode = !!selectedOccurrences.length;
-    if (this.wasSelectMode !== selectMode) {
-      this.wasSelectMode = selectMode;
-      navigation.setParams({ selectMode });
-    }*/
     return (
       <Card>
         <FlatList
-          data={sortOccurrences(this.props.occurrences)}
+          data={this.props.occurrences}
           keyExtractor={this.keyExtractor}
-          renderItem={this.renderOccurrence}
+          renderItem={this.renderDividerAndOccurrence}
         />
       </Card>
     );
@@ -48,16 +32,26 @@ export default class Occurrences extends PureComponent<Props> {
 
   keyExtractor = ({ time }: OccurrenceT) => time.getTime().toString()
 
-  renderOccurrence = ({ item: occurrence, index }: Object) => {
-    const { selectedOccurrences, ...other } = this.props;
+  renderDividerAndOccurrence = ({ item: occurrence, index }: Object) => {
+    const { occurrences, selectedOccurrences, ...other } = this.props;
+    // TODO: check if it's kosher to access other array items in a flatlist renderItem function.
     return (
-      <Occurrence
-        index={index}
-        isSelected={selectedOccurrences.includes(index)}
-        occurrence={occurrence}
-        selectMode={!!selectedOccurrences.length}
-        {...other}
-      />
+      <View>
+        {!!index &&
+          <Interval
+            first={false}
+            time={occurrence.time}
+            previousTime={occurrences[index - 1].time}
+          />
+        }
+        <Occurrence
+          index={index}
+          isSelected={selectedOccurrences.includes(index)}
+          occurrence={occurrence}
+          selectMode={!!selectedOccurrences.length}
+          {...other}
+        />
+      </View>
     );
   }
 }

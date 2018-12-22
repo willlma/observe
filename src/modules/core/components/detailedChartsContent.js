@@ -9,6 +9,7 @@ import type {
   Occurrence,
   Sentence
 } from 'src/libs/types';
+import { sortOccurrences } from 'src/libs/helpers';
 import Card from './card';
 import WeekChart from './weekChart';
 import ComparisonList from './comparisonList';
@@ -45,7 +46,7 @@ const DetailedChartsContent = ({
     <Occurrences
       is24Hour={is24Hour}
       isDiscrete={discrete}
-      occurrences={occurrences}
+      occurrences={sortOccurrences(occurrences)}
       navigation={navigation}
       selectedOccurrences={selectedOccurrences}
       toggleOccurrenceSelected={toggleOccurrenceSelected}
