@@ -14,6 +14,7 @@ export const Regex = {
 
 export const splitter = ' ';
 export const day = 'day';
-export const android = 'android';
-export const ios = 'ios';
-export const iconPrefix = `${Platform.OS === ios ? ios : 'md'}-`;
+export const android = Platform.OS === 'android';
+const iosName = 'ios';
+export const ios = Platform.OS === iosName;
+export const iconPrefix = `${ios ? iosName : 'md'}-`;

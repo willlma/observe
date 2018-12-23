@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppRegistry, SafeAreaView } from 'react-native';
+import { AppRegistry } from 'react-native';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -12,7 +12,6 @@ import * as detailedChartsReducers from './src/modules/core/reducers/detailedCha
 import * as settingsReducers from './src/reducers/settingsReducers';
 import { setItem } from './src/services/storage';
 import { startup } from './src/modules/core/actionCreators/actionCreators';
-import { white } from './src/styles/colors';
 
 const initialState = undefined;
 const rootReducer = combineReducers({
@@ -32,11 +31,9 @@ const AppNavigator = createAppContainer(createStackNavigator({
 }, { headerMode: 'screen' }));
 
 const observe = () => (
-  <SafeAreaView style={{ flex: 1, backgroundColor: white }}>
-    <Provider store={store}>
-      <AppNavigator />
-    </Provider>
-  </SafeAreaView>
+  <Provider store={store}>
+    <AppNavigator />
+  </Provider>
 );
 
 AppRegistry.registerComponent('observe', () => observe);

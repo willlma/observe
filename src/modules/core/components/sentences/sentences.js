@@ -2,19 +2,16 @@
 import React, { PureComponent } from 'react';
 import {
   FlatList,
-  LayoutAnimation,
-  Platform,
   StyleSheet,
   UIManager,
-  View
 } from 'react-native';
 import { latestOccurrence, latestOccurrenceText } from 'src/libs/helpers';
-import { android } from 'src/libs/constants';
+import { android, ios } from 'src/libs/constants';
 import type { Action, Sentence as SentenceT } from 'src/libs/types';
 import { quarterMarginWidth } from 'src/styles/variables';
 import Sentence from './sentence';
 
-if (Platform.OS === android && UIManager.setLayoutAnimationEnabledExperimental) {
+if (android && UIManager.setLayoutAnimationEnabledExperimental) {
   // UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
@@ -35,6 +32,7 @@ export default class SentenceList extends PureComponent<Props> {
       <FlatList
         data={sentences.sort(this.timeSort)}
         inverted
+        keyboardShouldPersistTaps='handled'
         keyExtractor={this.keyExtractor}
         renderItem={this.renderSentence}
         style={styles.sentences}
@@ -67,5 +65,5 @@ const styles = StyleSheet.create({
   sentences: {
     flex: 1,
     marginBottom: quarterMarginWidth,
-  }
+  },
 });

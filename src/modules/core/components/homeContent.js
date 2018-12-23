@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import {
   KeyboardAvoidingView,
-  Platform,
+  SafeAreaView,
   StyleSheet,
   Text,
   View
@@ -21,13 +21,14 @@ type Props = {
   navigation: Object
 }
 
-const PlatformView = (props) => (Platform.OS === ios ?
-  <KeyboardAvoidingView
-    behavior='padding'
-    enabled
-    keyboardVerticalOffset={42}
-    {...props}
-  /> :
+const PlatformView = (props) => (ios ?
+  <SafeAreaView style={styles.iosContainer}>
+    <KeyboardAvoidingView
+      behavior='padding'
+      enabled
+      {...props}
+    />
+  </SafeAreaView>:
   <View {...props} />
 );
 
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: navy,
   },
+  iosContainer: { flex: 1, backgroundColor: 'white' },
   text: {
     color: white,
     padding: marginWidth,
