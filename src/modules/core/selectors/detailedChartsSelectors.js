@@ -6,29 +6,22 @@ import { getSentence, getSentences } from './homeSelectors';
 
 const getWords = ({ text = '' }) => text.split(splitter);
 
-function getPointer(baseWords, words) {
-  let pointer;
-  words.every((word, i) => {
-    if (baseWords[i] === word) return true;
-    pointer = i;
-    return false;
-  });
-  return pointer;
-}
+const getPointer = (baseWords, words) => {
+  const index = words.findIndex((word, i) => baseWords[i] !== word);
+  return index !== -1 && index;
+};
 
 const getSubstr = (words, start, fromEnd) =>
   words.slice(start, fromEnd ? -fromEnd : undefined).join(splitter);
 
 const toArray = (comparisons) =>
-  Object.keys(comparisons)
-    .map((commonSubstr) => ({
-      commonSubstr,
-      diffs: Object.keys(comparisons[commonSubstr]).map((substring) => ({
-        substring,
-        ids: comparisons[commonSubstr][substring]
-      }))
+  Object.keys(comparisons).map((commonSubstr) => ({
+    commonSubstr,
+    diffs: Object.keys(comparisons[commonSubstr]).map((substring) => ({
+      substring,
+      ids: comparisons[commonSubstr][substring]
     }))
-    .sort((a, b) => b.commonSubstr.length - a.commonSubstr.length);
+  })).sort((a, b) => b.commonSubstr.length - a.commonSubstr.length);
 
 export const getComparisons = createSelector(
   getSentence,
@@ -52,9 +45,8 @@ export const getComparisons = createSelector(
       const diffSubstr = getSubstr(words, pointer, reversePointer);
 
       if (reversePointer) {
-        commonSubstr += ` ${cloze.word}  ${baseWords
-          .slice(-reversePointer)
-          .join(splitter)}`;
+        const sentenceEnd = baseWords.slice(-reversePointer).join(splitter);
+        commonSubstr += ` ${cloze.word}  ${sentenceEnd}`;
       }
 
       if (!comparisons[commonSubstr]) {

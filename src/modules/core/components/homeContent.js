@@ -28,7 +28,7 @@ const PlatformView = (props) => (ios ?
       enabled
       {...props}
     />
-  </SafeAreaView>:
+  </SafeAreaView> :
   <View {...props} />
 );
 
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: navy,
   },
-  iosContainer: { flex: 1, backgroundColor: 'white' },
+  iosContainer: { flex: 1, backgroundColor: white },
   text: {
     color: white,
     padding: marginWidth,
